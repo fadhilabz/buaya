@@ -1,6 +1,7 @@
 "use client"; // Menandakan ini adalah komponen client-side
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image"; // Import Image dari next/image
 
 export default function FarahPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -11,7 +12,7 @@ export default function FarahPage() {
       audioRef.current
         .play()
         .then(() => setIsPlaying(true))
-        .catch((err) => {
+        .catch(() => {
           console.log("Auto play diblokir browser, klik tombol untuk memulai");
         });
     }
@@ -26,7 +27,7 @@ export default function FarahPage() {
   return (
     <div className="min-h-screen bg-pink-50 flex flex-col items-center justify-center text-center p-6">
       <div className="max-w-md bg-white rounded-2xl shadow-lg p-6">
-        <img
+        <Image
           src="/img/crocodile-1043097_960_720.jpg"
           alt="Foto Farah"
           width={200}
