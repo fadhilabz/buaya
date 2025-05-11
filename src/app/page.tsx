@@ -1,17 +1,27 @@
 "use client"; // Menandakan ini adalah komponen client-side
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function FarahPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handlePlay = () => {
+    if (audioRef.current) {
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => {
+          console.log("Auto play diblokir browser, klik tombol untuk memulai");
+        });
+    }
+  };
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.play().catch((err) => {
-        console.log("Auto play diblokir browser, klik tombol untuk memulai");
-      });
+    if (audioRef.current && !isPlaying) {
+      audioRef.current.pause(); // Pastikan audio berhenti saat halaman dimuat
     }
-  }, []);
+  }, [isPlaying]);
 
   return (
     <div className="min-h-screen bg-pink-50 flex flex-col items-center justify-center text-center p-6">
@@ -51,6 +61,12 @@ export default function FarahPage() {
             Browser kamu tidak mendukung pemutar audio.
           </audio>
         </div>
+
+        {!isPlaying && (
+          <button onClick={handlePlay} className="mt-4 text-pink-500">
+            Play Audio
+          </button>
+        )}
       </div>
     </div>
   );
